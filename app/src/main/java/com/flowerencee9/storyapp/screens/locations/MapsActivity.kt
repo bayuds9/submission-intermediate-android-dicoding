@@ -68,6 +68,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onResume() {
         super.onResume()
+        closeDrawer()
         initRequestData()
     }
 
@@ -105,10 +106,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             false -> 15f
             else -> 5f
         }))
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, if (!addNew) 15f else 20f))
-        if (binding.drawerLayout.isDrawerOpen(binding.navItemList)) binding.drawerLayout.closeDrawer(
-            binding.navItemList
-        )
+        closeDrawer()
         if (addNew == true){
             mMap.addCircle(
                 CircleOptions()
@@ -123,6 +121,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
+    private fun closeDrawer(){
+        if (binding.drawerLayout.isDrawerOpen(binding.navItemList)) binding.drawerLayout.closeDrawer(
+            binding.navItemList
+        )
+    }
+
     private fun detailStory(story: Story) {
         startActivity(DetailActivity.newIntent(this, story))
     }
@@ -131,6 +135,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         viewModel.stories.observe(this){
             mapItemAdapter.submitData(lifecycle, it)
         }
+        Log.d(TAG, "map data ${mapItemAdapter.snapshotData.value}")
+        if (mapItemAdapter.snapshotData.value?.isNotEmpty() == true) mapItemAdapter.refresh()
     }
 
     override fun onMapReady(p0: GoogleMap) {
