@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_name">Name</string>
+    <string name="info_password_length"><![CDATA[Minimum %1$s characters]]></string>
+    <string name="button_login">Login</string>
+    <string name="button_close">Close</string>
+    <string name="button_register">Register</string>
+    <string name="button_add">Add</string>
+    <string name="hint_description">Description</string>
+
+    <string name="asking_register">Don\'t Have Account? Register Here</string>
+    <string name="click_register">Register Here</string>
+    <string name="asking_login">Already Have Account? Click Here</string>
+    <string name="click_login">Click Here</string>
+
+    <string name="select_image_source">Pick Image From</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="desc_image">Image To Upload</string>
+    <string name="add_content">Add Content</string>
+    <string name="log_out">Log out</string>
+    <string name="locate">Locate</string>
+    <string name="detail">Detail</string>
+    <string name="open_maps_item">Open Maps Item</string>
+    <string name="switch_to_maps">Switch To Maps</string>
+    <string name="retry">Retry</string>
+
+    <string name="location_not_found">Current Location Not Found</string>
+    <string name="current_location">Current Location</string>
+    <string name="permission_not_granted">Permission Not Granted</string>
+</resources>
