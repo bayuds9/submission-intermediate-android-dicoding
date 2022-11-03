@@ -5,11 +5,13 @@ import android.content.SharedPreferences
 import com.flowerencee9.storyapp.BuildConfig
 import com.flowerencee9.storyapp.support.PREF.Companion.BEARER_TOKEN
 import com.flowerencee9.storyapp.support.PREF.Companion.USER_ID
+import com.flowerencee9.storyapp.support.PREF.Companion.USER_NAME
 
 interface PREF {
     companion object {
         const val NAME = BuildConfig.APPLICATION_ID
         const val USER_ID = "USER_ID"
+        const val USER_NAME = "USER_NAME"
         const val BEARER_TOKEN = "BEARER_TOKEN"
     }
 }
@@ -36,6 +38,11 @@ class SharedPref(context: Context) {
 fun Context.isLogin(): Boolean {
     val sharedPref = SharedPref(this)
     return sharedPref.getString(USER_ID).isNotEmpty()
+}
+
+fun Context.getUserName(): String {
+    val sharedPref = SharedPref(this)
+    return sharedPref.getString(USER_NAME)
 }
 
 fun Context.getToken(): String {

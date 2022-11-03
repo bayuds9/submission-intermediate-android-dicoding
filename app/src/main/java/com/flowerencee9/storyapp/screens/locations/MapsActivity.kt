@@ -24,9 +24,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityMapsBinding
 import com.flowerencee9.storyapp.models.response.Story
+import com.flowerencee9.storyapp.screens.auth.login.LoginActivity
 import com.flowerencee9.storyapp.screens.detail.DetailActivity
 import com.flowerencee9.storyapp.screens.formuploader.FormUploaderActivity
 import com.flowerencee9.storyapp.support.customs.CustomInfoWindow
+import com.flowerencee9.storyapp.support.getUserName
+import com.flowerencee9.storyapp.support.isLogin
+import com.flowerencee9.storyapp.support.removeUserPref
 import com.flowerencee9.storyapp.support.supportclass.LoadingStateAdapter
 import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -39,7 +43,15 @@ import com.google.android.gms.maps.model.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     companion object {
-        fun newIntent(context: Context) = Intent(context, MapsActivity::class.java)
+        fun newIntent(context: Context, clearStack: Boolean = true) : Intent{
+            val intent = Intent(context, MapsActivity::class.java)
+            if (clearStack) intent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+            return intent
+        }
         private val TAG = MapsActivity::class.java.simpleName
     }
 
@@ -59,6 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (!isLogin()) startActivity(LoginActivity.newIntent(this))
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -88,16 +101,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     private fun setupView() {
-        binding.btnAdd.isEnabled = false
+        with(binding){
+            btnAdd.isEnabled = false
+            rvItem.apply {
+                adapter = mapItemAdapter.withLoadStateFooter(
+                    footer = LoadingStateAdapter{
+                        mapItemAdapter.retry()
+                    }
+                )
+                layoutManager = LinearLayoutManager(this@MapsActivity)
+            }
+            setSupportActionBar(mapsToolbar)
+            tvUserName.text = getUserName()
+            btnLogout.setOnClickListener { logoutUser() }
+        }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        binding.rvItem.adapter = mapItemAdapter.withLoadStateFooter(
-            footer = LoadingStateAdapter{
-                mapItemAdapter.retry()
-            }
-        )
-        binding.rvItem.layoutManager = LinearLayoutManager(this@MapsActivity)
-        setSupportActionBar(binding.mapsToolbar)
     }
 
     private fun relocateScreen(latLng: LatLng, addNew: Boolean? = false) {
@@ -240,6 +259,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 )
             )
         }
+    }
+
+    private fun logoutUser() {
+        removeUserPref()
+        startActivity(LoginActivity.newIntent(this))
     }
 
 }

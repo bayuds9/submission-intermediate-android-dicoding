@@ -67,12 +67,14 @@ class FormUploaderActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) Toast.makeText(
-                this,
-                "Permission not granted",
-                Toast.LENGTH_SHORT
-            ).show()
-            finish()
+            if (!allPermissionsGranted()) {
+                Toast.makeText(
+                    this,
+                    "Permission not granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
         }
     }
 

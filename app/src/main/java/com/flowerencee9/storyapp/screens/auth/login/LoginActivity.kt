@@ -16,6 +16,7 @@ import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.response.LoginResponse
 import com.flowerencee9.storyapp.screens.auth.register.RegisterActivity
 import com.flowerencee9.storyapp.screens.home.HomeActivity
+import com.flowerencee9.storyapp.screens.locations.MapsActivity
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isLogin()) startActivity(HomeActivity.newIntent(this, true))
+        if (isLogin()) startActivity(MapsActivity.newIntent(this, true))
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         setContentView(binding.root)
@@ -112,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(TAG, "$respond")
                 binding.root.snackbar(respond.message)
                 if (!respond.error) {
-                    startActivity(HomeActivity.newIntent(this@LoginActivity, true))
+                    startActivity(MapsActivity.newIntent(this@LoginActivity, true))
                 }
             }
         }

@@ -20,7 +20,6 @@ class CustomInfoWindow(private val context: Context) : GoogleMap.InfoWindowAdapt
         with(binding){
             title.text = marker.title
             snippet.text = marker.snippet
-            Log.d("wkwk", "${marker.snippet}")
         }
     }
 

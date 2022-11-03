@@ -28,8 +28,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 when(response.isSuccessful){
                     true -> {
                         val loginResponse = response.body()?.loginResult
-                        loginResponse?.let { sharedPref.putString(PREF.BEARER_TOKEN, it.token) }
-                        loginResponse?.let { sharedPref.putString(PREF.USER_ID, it.userId) }
+                        loginResponse?.let {
+                            sharedPref.putString(PREF.BEARER_TOKEN, it.token)
+                            sharedPref.putString(PREF.USER_NAME, it.name)
+                            sharedPref.putString(PREF.USER_ID, it.userId)
+                        }
                         response.body()?.let(respond)
                     }
                     else -> respond(LoginResponse(error = response.body()?.error ?: true, message = response.body()?.message ?: response.message()))
