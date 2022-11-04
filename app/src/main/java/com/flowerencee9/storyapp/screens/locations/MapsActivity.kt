@@ -41,7 +41,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnInfoWindowClickListener {
     companion object {
         fun newIntent(context: Context, clearStack: Boolean = true) : Intent{
             val intent = Intent(context, MapsActivity::class.java)
@@ -167,6 +168,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             setOnMarkerClickListener(this@MapsActivity)
             setInfoWindowAdapter(CustomInfoWindow(this@MapsActivity))
+            setOnInfoWindowClickListener(this@MapsActivity)
         }
         setMapStyle()
         showAllMarker()
@@ -264,6 +266,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private fun logoutUser() {
         removeUserPref()
         startActivity(LoginActivity.newIntent(this))
+    }
+
+    override fun onInfoWindowClick(p0: Marker) {
+        showIndonesiaDefault()
+        p0.hideInfoWindow()
     }
 
 }

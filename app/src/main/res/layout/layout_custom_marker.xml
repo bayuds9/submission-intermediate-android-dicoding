@@ -6,11 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_outlined"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <LinearLayout
         android:paddingHorizontal="20dp"
-        android:paddingVertical="20dp"
+        android:paddingVertical="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryVariant"
