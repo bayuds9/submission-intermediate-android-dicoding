@@ -1,17 +1,16 @@
-package com.flowerencee9.storyapp.screens.launcher
+package com.flowerencee9.storyapp.screens.splash
 
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityMainBinding
 import com.flowerencee9.storyapp.screens.auth.login.LoginActivity
 
-class MainActivity : AppCompatActivity() {
+class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sp: SoundPool
     private var soundId: Int = 0
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(LoginActivity.newIntent(this))
                 }, 5000)
             } else {
-                Toast.makeText(this@MainActivity, "Gagal load", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SplashScreenActivity, "Gagal load", Toast.LENGTH_SHORT).show()
             }
         }
         soundId = sp.load(this, R.raw.noot, 1)

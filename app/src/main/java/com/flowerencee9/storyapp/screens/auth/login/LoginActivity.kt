@@ -8,15 +8,13 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityAuthFormBinding
 import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.response.LoginResponse
 import com.flowerencee9.storyapp.screens.auth.register.RegisterActivity
-import com.flowerencee9.storyapp.screens.home.HomeActivity
-import com.flowerencee9.storyapp.screens.locations.MapsActivity
+import com.flowerencee9.storyapp.screens.main.MainActivity
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
@@ -28,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isLogin()) startActivity(MapsActivity.newIntent(this, true))
+        if (isLogin()) startActivity(MainActivity.newIntent(this, true))
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         setContentView(binding.root)
@@ -113,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(TAG, "$respond")
                 binding.root.snackbar(respond.message)
                 if (!respond.error) {
-                    startActivity(MapsActivity.newIntent(this@LoginActivity, true))
+                    startActivity(MainActivity.newIntent(this@LoginActivity, true))
                 }
             }
         }

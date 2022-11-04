@@ -28,7 +28,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".screens.launcher.MainActivity"
+            android:name=".screens.splash.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,7 @@
         <activity
             android:name="com.flowerencee9.storyapp.screens.detail.DetailActivity"
             android:exported="true" />
-        <activity android:name=".screens.locations.MapsActivity"
+        <activity android:name=".screens.main.MainActivity"
             android:exported="true"/>
 
         <meta-data

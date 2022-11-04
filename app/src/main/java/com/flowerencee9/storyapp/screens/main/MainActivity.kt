@@ -1,4 +1,4 @@
-package com.flowerencee9.storyapp.screens.locations
+package com.flowerencee9.storyapp.screens.main
 
 import android.Manifest
 import android.content.Context
@@ -18,8 +18,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityMapsBinding
@@ -41,11 +39,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
     GoogleMap.OnInfoWindowClickListener {
     companion object {
         fun newIntent(context: Context, clearStack: Boolean = true) : Intent{
-            val intent = Intent(context, MapsActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
             if (clearStack) intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or
                         Intent.FLAG_ACTIVITY_CLEAR_TASK or
@@ -53,19 +51,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             )
             return intent
         }
-        private val TAG = MapsActivity::class.java.simpleName
+        private val TAG = MainActivity::class.java.simpleName
     }
 
     private lateinit var binding: ActivityMapsBinding
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient : FusedLocationProviderClient
 
-    private val viewModel: MapsViewModel by viewModels {
+    private val viewModel: MainViewModel by viewModels {
         ViewModelFactory(this)
     }
 
-    private val mapItemAdapter: AdapterItemMapsData by lazy {
-        AdapterItemMapsData(
+    private val mapItemAdapter: AdapterItemData by lazy {
+        AdapterItemData(
             { latLng: LatLng -> relocateScreen(latLng) },
             { story: Story -> detailStory(story) }
         )
@@ -110,7 +108,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                         mapItemAdapter.retry()
                     }
                 )
-                layoutManager = LinearLayoutManager(this@MapsActivity)
+                layoutManager = LinearLayoutManager(this@MainActivity)
             }
             setSupportActionBar(mapsToolbar)
             tvUserName.text = getUserName()
@@ -166,9 +164,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 isZoomControlsEnabled = true
             }
 
-            setOnMarkerClickListener(this@MapsActivity)
-            setInfoWindowAdapter(CustomInfoWindow(this@MapsActivity))
-            setOnInfoWindowClickListener(this@MapsActivity)
+            setOnMarkerClickListener(this@MainActivity)
+            setInfoWindowAdapter(CustomInfoWindow(this@MainActivity))
+            setOnInfoWindowClickListener(this@MainActivity)
         }
         setMapStyle()
         showAllMarker()

@@ -1,4 +1,4 @@
-package com.flowerencee9.storyapp.screens.locations
+package com.flowerencee9.storyapp.screens.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,6 @@ import androidx.paging.cachedIn
 import com.flowerencee9.storyapp.models.data.StoryRepository
 import com.flowerencee9.storyapp.models.response.Story
 
-class MapsViewModel(private val storyRepository: StoryRepository) : ViewModel() {
+class MainViewModel(storyRepository: StoryRepository) : ViewModel() {
     val stories: LiveData<PagingData<Story>> = storyRepository.getStory().cachedIn(viewModelScope)
 }

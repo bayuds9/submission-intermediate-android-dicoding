@@ -1,4 +1,4 @@
-package com.flowerencee9.storyapp.screens.locations
+package com.flowerencee9.storyapp.screens.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
@@ -44,11 +44,11 @@ class MapsViewModelTest {
         expectedQuote.value = data
 
         Mockito.`when`(storyRepository.getStory()).thenReturn(expectedQuote)
-        val mapsViewModel = MapsViewModel(storyRepository)
+        val mapsViewModel = MainViewModel(storyRepository)
         val actualStory: PagingData<Story> = mapsViewModel.stories.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = AdapterItemMapsData.DIFF_CALLBACK,
+            diffCallback = AdapterItemData.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main
         )
@@ -75,7 +75,7 @@ class StoryPagingSource : PagingSource<Int, LiveData<List<Story>>>() {
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, LiveData<List<Story>>>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, LiveData<List<Story>>>): Int {
         return 0
     }
 

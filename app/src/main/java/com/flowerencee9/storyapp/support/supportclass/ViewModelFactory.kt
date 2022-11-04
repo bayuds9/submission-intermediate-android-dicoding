@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.networking.di.Injection
 import com.flowerencee9.storyapp.screens.home.HomeViewModel
-import com.flowerencee9.storyapp.screens.locations.MapsViewModel
+import com.flowerencee9.storyapp.screens.main.MainViewModel
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -14,8 +14,8 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             return HomeViewModel(Injection.provideStories(context)) as T
         }
         @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
-            return MapsViewModel(Injection.provideStories(context)) as T
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(Injection.provideStories(context)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

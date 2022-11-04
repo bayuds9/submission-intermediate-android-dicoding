@@ -14,9 +14,8 @@ import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityHomeBinding
 import com.flowerencee9.storyapp.models.response.Story
 import com.flowerencee9.storyapp.screens.auth.login.LoginActivity
-import com.flowerencee9.storyapp.screens.formuploader.FormUploaderActivity
 import com.flowerencee9.storyapp.screens.detail.DetailActivity
-import com.flowerencee9.storyapp.screens.locations.MapsActivity
+import com.flowerencee9.storyapp.screens.main.MainActivity
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.supportclass.LoadingStateAdapter
 import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
@@ -85,7 +84,7 @@ class HomeActivity : AppCompatActivity() {
             fabAddContent.setOnClickListener { gotoFormUploader() }
             fabLogout.setOnClickListener { logoutUser() }
             fabToMaps.setOnClickListener {
-                startActivity(MapsActivity.newIntent(this@HomeActivity))
+                startActivity(MainActivity.newIntent(this@HomeActivity))
             }
         }
     }

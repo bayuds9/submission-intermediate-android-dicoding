@@ -1,9 +1,7 @@
-package com.flowerencee9.storyapp.screens.locations
+package com.flowerencee9.storyapp.screens.main
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,19 +9,17 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.LayoutMapsItemListBinding
 import com.flowerencee9.storyapp.models.response.Story
-import com.flowerencee9.storyapp.support.supportclass.CallbackStory
 import com.flowerencee9.storyapp.support.animateVisibility
 import com.flowerencee9.storyapp.support.isViewShown
 import com.flowerencee9.storyapp.support.toHide
 import com.google.android.gms.maps.model.LatLng
 
-class AdapterItemMapsData(
+class AdapterItemData(
     private val locateListener : (LatLng) -> Unit,
     private val detailListener : (Story) -> Unit
-) : PagingDataAdapter<Story, AdapterItemMapsData.ViewHolder>(DIFF_CALLBACK) {
+) : PagingDataAdapter<Story, AdapterItemData.ViewHolder>(DIFF_CALLBACK) {
 
     private val _snapshotData = MutableLiveData<List<Story>>()
     val snapshotData : LiveData<List<Story>>
