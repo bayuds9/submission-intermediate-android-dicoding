@@ -3,7 +3,6 @@ package com.flowerencee9.storyapp.support.customs
 import android.content.Context
 import android.content.res.ColorStateList
 import android.text.Editable
-import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -31,11 +30,11 @@ class CustomInput : ConstraintLayout {
     }
 
     constructor(context: Context) : super(context, null) {
-        init(context, null)
+        init(context)
     }
 
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
-        init(context, attributeSet)
+        init(context)
 
     }
 
@@ -44,10 +43,10 @@ class CustomInput : ConstraintLayout {
         attributeSet,
         defstyleAttr
     ) {
-        init(context, attributeSet)
+        init(context)
     }
 
-    private fun init(context: Context, attributeSet: AttributeSet?) {
+    private fun init(context: Context) {
         mContext = context
         binding = ViewInputTextBinding.bind(
             LayoutInflater.from(mContext).inflate(R.layout.view_input_text, this, true)

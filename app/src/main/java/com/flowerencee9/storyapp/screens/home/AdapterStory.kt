@@ -22,7 +22,6 @@ class AdapterStory(
         fun bind(item: Story) = with(itemView) {
             val binding = LayoutItemListBinding.bind(itemView)
             binding.tvStoryName.text = item.name
-            binding.tvStoryDesc.text = item.description
             Glide.with(context).load(item.photoUrl).into(binding.imgStory)
             binding.root.setOnClickListener {
                 listener(item)

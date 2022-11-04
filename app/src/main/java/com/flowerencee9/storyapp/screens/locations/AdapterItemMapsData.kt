@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.LayoutMapsItemListBinding
 import com.flowerencee9.storyapp.models.response.Story
@@ -44,14 +45,15 @@ class AdapterItemMapsData(
     inner class ViewHolder(private val binding: LayoutMapsItemListBinding, private val context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Story) {
             with(binding){
+                Glide.with(context).load(item.photoUrl).into(binding.imgStory)
                 tvItemName.apply {
                     text = item.name
                     setOnClickListener {
-                        val duration = 500
-                        if (containerItemAction.isViewShown()) {
-                            containerItemAction.animateVisibility(false, duration.toLong())
-                        } else containerItemAction.animateVisibility(true, duration.toLong())
+                        animateHiddenAction(this@with)
                     }
+                }
+                imgStory.setOnClickListener {
+                    animateHiddenAction(this)
                 }
                 tvActionLocate.setOnClickListener {
                     val itemLatLng = LatLng(item.lat!!, item.lon!!)
@@ -65,6 +67,15 @@ class AdapterItemMapsData(
             }
         }
 
+    }
+
+    private fun animateHiddenAction(binding: LayoutMapsItemListBinding) {
+        val duration = 500
+        with(binding){
+            if (containerItemAction.isViewShown()) {
+                containerItemAction.animateVisibility(false, duration.toLong())
+            } else containerItemAction.animateVisibility(true, duration.toLong())
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

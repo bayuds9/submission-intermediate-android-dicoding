@@ -1,15 +1,15 @@
 package com.flowerencee9.storyapp.models.data
 
-import androidx.lifecycle.LiveData
-import androidx.paging.*
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.flowerencee9.storyapp.models.response.Story
 import com.flowerencee9.storyapp.networking.API
-import java.lang.Exception
 
 class StoryPagingSource(private val apiService: API.CONTENT_SERVICE) : PagingSource<Int, Story>() {
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
     }
+
     override fun getRefreshKey(state: PagingState<Int, Story>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)

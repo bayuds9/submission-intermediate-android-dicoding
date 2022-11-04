@@ -4,10 +4,13 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
 import android.os.Environment
+import android.os.Parcelable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
@@ -176,4 +179,9 @@ private fun animateView(v: View, initialHeight: Int, targetHeight: Int, animDura
     valueAnimator.duration = animDuration
     valueAnimator.interpolator = DecelerateInterpolator()
     valueAnimator.start()
+}
+
+inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }

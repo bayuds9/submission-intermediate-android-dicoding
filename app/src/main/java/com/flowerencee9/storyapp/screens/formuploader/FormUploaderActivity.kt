@@ -23,12 +23,9 @@ import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityFormUploaderBinding
 import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
 import com.flowerencee9.storyapp.models.response.BasicResponse
-import com.flowerencee9.storyapp.support.createTempFile
+import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
-import com.flowerencee9.storyapp.support.reduceFileImage
-import com.flowerencee9.storyapp.support.snackbar
-import com.flowerencee9.storyapp.support.uriToFile
 import com.google.android.gms.maps.model.LatLng
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -40,7 +37,7 @@ import java.io.File
 class FormUploaderActivity : AppCompatActivity() {
 
     private val latLangPosition by lazy {
-        intent.getParcelableExtra(EXTRA_LATLNG) ?: LatLng(0.0, 0.0)
+        intent.parcelable(EXTRA_LATLNG) ?: LatLng(0.0, 0.0)
     }
 
     private lateinit var binding: ActivityFormUploaderBinding
@@ -123,7 +120,7 @@ class FormUploaderActivity : AppCompatActivity() {
                 Log.d(TAG, "$respond")
                 binding.root.snackbar(respond.message)
                 if (!respond.error) Handler(Looper.getMainLooper()).postDelayed(
-                    { onBackPressed() },
+                    { onBackPressedDispatcher.onBackPressed() },
                     1000
                 )
             }

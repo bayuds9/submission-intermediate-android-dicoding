@@ -18,7 +18,6 @@ class StoryListAdapter(
         fun bind(data: Story) {
             with(binding){
                 tvStoryName.text = data.name
-                tvStoryDesc.text = data.description
                 Glide.with(context).load(data.photoUrl).into(imgStory)
                 root.setOnClickListener {
                     listener(data)
