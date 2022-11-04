@@ -42,9 +42,6 @@ class API {
             @Part(LONGITUDE) longitude: Double?
         ) : Call<BasicResponse>
 
-        @GET
-        fun getListData(@Url url: String): Call<ListStoryResponse>
-
         @GET(GET_LIST)
         suspend fun getStories(
             @Query("page") page: Int,
