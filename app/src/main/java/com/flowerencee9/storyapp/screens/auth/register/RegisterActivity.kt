@@ -102,10 +102,11 @@ class RegisterActivity : AppCompatActivity() {
                 text = getString(R.string.button_register)
                 setOnClickListener { registerUser() }
             }
-        }
-        viewModel.loadingStates.observe(this){
-            binding.loading.loadingContainer.showView(it)
-            Log.d(TAG, "loading $it")
+
+            viewModel.loadingStates.observe(this@RegisterActivity){
+                loading.loadingContainer.showView(it)
+                Log.d(TAG, "loading $it")
+            }
         }
         setupButtonStates()
     }

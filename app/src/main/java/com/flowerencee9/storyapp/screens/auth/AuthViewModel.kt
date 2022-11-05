@@ -11,6 +11,7 @@ import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.request.RegisterRequest
 import com.flowerencee9.storyapp.models.response.BasicResponse
 import com.flowerencee9.storyapp.models.response.LoginResponse
+import com.flowerencee9.storyapp.models.response.LoginResult
 import com.flowerencee9.storyapp.networking.Services
 import com.flowerencee9.storyapp.support.PREF
 import com.flowerencee9.storyapp.support.SharedPref
@@ -22,6 +23,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val service = Services(application.applicationContext).authService
     private val TAG = AuthViewModel::class.java.simpleName
     private val sharedPref = SharedPref(application.applicationContext)
+
+    private val _loginData : MutableLiveData<LoginResult> = MutableLiveData()
+    val loginData : LiveData<LoginResult> get() = _loginData
 
     private val _basicResponse : MutableLiveData<BasicResponse> = MutableLiveData()
     val basicResponse : LiveData<BasicResponse> get() = _basicResponse
@@ -39,6 +43,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         sharedPref.putString(PREF.BEARER_TOKEN, it.token)
                         sharedPref.putString(PREF.USER_NAME, it.name)
                         sharedPref.putString(PREF.USER_ID, it.userId)
+
+                        _loginData.value = LoginResult(it.name, it.token, it.userId)
                     }
                     response.body()?.let {
                         _basicResponse.value = BasicResponse(false, it.message)
