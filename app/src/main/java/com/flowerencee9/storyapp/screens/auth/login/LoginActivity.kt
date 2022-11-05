@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityAuthFormBinding
 import com.flowerencee9.storyapp.models.request.LoginRequest
-import com.flowerencee9.storyapp.models.response.LoginResponse
+import com.flowerencee9.storyapp.screens.auth.AuthViewModel
 import com.flowerencee9.storyapp.screens.auth.register.RegisterActivity
 import com.flowerencee9.storyapp.screens.main.MainActivity
 import com.flowerencee9.storyapp.support.*
@@ -22,13 +22,13 @@ import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthFormBinding
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (isLogin()) startActivity(MainActivity.newIntent(this, true))
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setContentView(binding.root)
         setupView()
     }
@@ -89,6 +89,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setupButtonStates()
+        viewModel.loadingStates.observe(this){
+            binding.loading.loadingContainer.showView(it)
+            Log.d(TAG, "loading $it")
+        }
     }
 
     private fun gotoRegister() {
@@ -107,12 +111,11 @@ class LoginActivity : AppCompatActivity() {
                 edtEmail.getText(),
                 edtPassword.getText()
             )
-            viewModel.loginUser(request) { respond: LoginResponse ->
-                Log.d(TAG, "$respond")
-                binding.root.snackbar(respond.message)
-                if (!respond.error) {
-                    startActivity(MainActivity.newIntent(this@LoginActivity, true))
-                }
+            viewModel.loginUser(request)
+            viewModel.basicResponse.observe(this@LoginActivity) {
+                Log.d(TAG, "login response $it")
+                if (!it.error) startActivity(MainActivity.newIntent(this@LoginActivity, true))
+                else binding.root.snackbar(it.message)
             }
         }
     }

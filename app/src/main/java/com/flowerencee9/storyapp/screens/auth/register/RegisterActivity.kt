@@ -10,30 +10,26 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityAuthFormBinding
 import com.flowerencee9.storyapp.models.request.RegisterRequest
-import com.flowerencee9.storyapp.models.response.BasicResponse
+import com.flowerencee9.storyapp.screens.auth.AuthViewModel
 import com.flowerencee9.storyapp.screens.auth.login.LoginActivity
-import com.flowerencee9.storyapp.support.SpannableListener
+import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
-import com.flowerencee9.storyapp.support.snackbar
-import com.flowerencee9.storyapp.support.spanText
-import com.flowerencee9.storyapp.support.toShow
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthFormBinding
-    private lateinit var viewModel: RegisterViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setContentView(binding.root)
         setupView()
     }
@@ -107,12 +103,16 @@ class RegisterActivity : AppCompatActivity() {
                 setOnClickListener { registerUser() }
             }
         }
-
+        viewModel.loadingStates.observe(this){
+            binding.loading.loadingContainer.showView(it)
+            Log.d(TAG, "loading $it")
+        }
         setupButtonStates()
     }
 
     private fun gotoLogin() {
         startActivity(LoginActivity.newIntent(this))
+        finish()
     }
 
     private fun registerUser() {
@@ -122,14 +122,11 @@ class RegisterActivity : AppCompatActivity() {
                 edtName.getText(),
                 edtPassword.getText()
             )
-            viewModel.registerUser(request) { respond: BasicResponse ->
-                Log.d(TAG, "$respond")
-                binding.root.snackbar(respond.message)
-                if (!respond.error) {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        gotoLogin()
-                    }, 3000)
-                }
+            viewModel.registerUser(request)
+            viewModel.basicResponse.observe(this@RegisterActivity) {
+                Log.d(TAG, "response $it")
+                binding.root.snackbar(it.message)
+                if (!it.error) Handler(Looper.getMainLooper()).postDelayed({ gotoLogin() }, 3000)
             }
         }
     }

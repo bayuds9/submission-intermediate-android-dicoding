@@ -11,7 +11,7 @@ class StoryRepository(private val storyDatabase: StoryDatabase, private val apiS
     fun getStory() : LiveData<PagingData<Story>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 10
+                pageSize = 5
             ),
             remoteMediator = StoryRemoteMediator(storyDatabase, apiService),
             pagingSourceFactory = {

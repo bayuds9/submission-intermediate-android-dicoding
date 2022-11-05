@@ -32,4 +32,6 @@
     <string name="location_not_found">Current Location Not Found</string>
     <string name="current_location">Current Location</string>
     <string name="permission_not_granted">Permission Not Granted</string>
+
+    <string name="loading">Loading</string>
 </resources>

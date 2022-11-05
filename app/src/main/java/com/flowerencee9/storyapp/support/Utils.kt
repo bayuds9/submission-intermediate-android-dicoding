@@ -55,6 +55,13 @@ fun View.toShow() {
 
 fun View.isViewShown() = this.visibility == View.VISIBLE
 
+fun View.showView(states: Boolean) {
+    when(states){
+        true -> this.toShow()
+        else -> this.toHide()
+    }
+}
+
 interface SpannableListener {
     fun onClick()
 }

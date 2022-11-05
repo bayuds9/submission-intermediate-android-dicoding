@@ -31,9 +31,10 @@
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/activity_maps.xml" value="0.25" />
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_custom_marker.xml" value="0.33" />
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_item_list.xml" value="0.1" />
-        <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_item_loading.xml" value="0.1" />
+        <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_item_loading.xml" value="0.25" />
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_maps_item_list.xml" value="0.25" />
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_navigation_header.xml" value="0.19743589743589743" />
+        <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/layout/layout_popup_loading.xml" value="0.19743589743589743" />
         <entry key="..\:/Dicoding/Android/IntermediateSubmission/submission2/app/src/main/res/menu/menu_maps_action.xml" value="0.14864864864864866" />
       </map>
     </option>
