@@ -13,18 +13,19 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityFormUploaderBinding
 import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
+import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
 import com.google.android.gms.maps.model.LatLng
 import java.io.File
 
@@ -36,14 +37,16 @@ class FormUploaderActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityFormUploaderBinding
-    private lateinit var viewModel: FormUploaderViewModel
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
+
+    private val viewModel: FormUploaderViewModel by viewModels {
+        ViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFormUploaderBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[FormUploaderViewModel::class.java]
         setContentView(binding.root)
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)

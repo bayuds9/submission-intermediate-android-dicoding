@@ -1,12 +1,10 @@
 package com.flowerencee9.storyapp.screens.auth
 
-import android.app.Application
-import android.os.Handler
-import android.os.Looper
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.request.RegisterRequest
 import com.flowerencee9.storyapp.models.response.BasicResponse
@@ -19,25 +17,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
-    private val service = Services(application.applicationContext).authService
+class AuthViewModel(context: Context) : ViewModel() {
+    private val service = Services(context).authService
     private val TAG = AuthViewModel::class.java.simpleName
-    private val sharedPref = SharedPref(application.applicationContext)
+    private val sharedPref = SharedPref(context)
 
-    private val _loginData : MutableLiveData<LoginResult> = MutableLiveData()
-    val loginData : LiveData<LoginResult> get() = _loginData
+    private val _loginData: MutableLiveData<LoginResult> = MutableLiveData()
+    val loginData: LiveData<LoginResult> get() = _loginData
 
-    private val _basicResponse : MutableLiveData<BasicResponse> = MutableLiveData()
-    val basicResponse : LiveData<BasicResponse> get() = _basicResponse
+    private val _basicResponse: MutableLiveData<BasicResponse> = MutableLiveData()
+    val basicResponse: LiveData<BasicResponse> get() = _basicResponse
 
-    private val _loadingStates : MutableLiveData<Boolean> = MutableLiveData()
-    val loadingStates : LiveData<Boolean> get() = _loadingStates
+    private val _loadingStates: MutableLiveData<Boolean> = MutableLiveData()
+    val loadingStates: LiveData<Boolean> get() = _loadingStates
 
-    fun loginUser(request: LoginRequest){
+    fun loginUser(request: LoginRequest) {
         val loginCallback = object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 Log.d(TAG, "calling ${call.request()}")
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     val loginResponse = response.body()?.loginResult
                     loginResponse?.let {
                         sharedPref.putString(PREF.BEARER_TOKEN, it.token)
@@ -68,7 +66,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         val registerCallback = object : Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 Log.d(TAG, "calling ${call.request()}")
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     response.body()?.let {
                         _basicResponse.value = BasicResponse(!response.isSuccessful, it.message)
                     }

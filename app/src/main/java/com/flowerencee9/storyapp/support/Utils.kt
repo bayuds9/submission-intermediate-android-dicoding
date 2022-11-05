@@ -16,7 +16,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
@@ -43,10 +42,6 @@ fun String.isEmailValid(): Boolean {
 
 fun View.toHide() {
     this.visibility = View.GONE
-}
-
-fun View.toInvisible() {
-    this.visibility = View.INVISIBLE
 }
 
 fun View.toShow() {

@@ -1,7 +1,5 @@
 package com.flowerencee9.storyapp.models.request
 
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 
 data class ContentUploaderRequest(

@@ -4,18 +4,21 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.networking.di.Injection
-import com.flowerencee9.storyapp.screens.home.HomeViewModel
+import com.flowerencee9.storyapp.screens.auth.AuthViewModel
+import com.flowerencee9.storyapp.screens.formuploader.FormUploaderViewModel
 import com.flowerencee9.storyapp.screens.main.MainViewModel
 
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(Injection.provideStories(context)) as T
-        }
-        @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(Injection.provideStories(context)) as T
+        }
+        if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
+            return AuthViewModel(context) as T
+        }
+        if (modelClass.isAssignableFrom(FormUploaderViewModel::class.java)) {
+            return FormUploaderViewModel(context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

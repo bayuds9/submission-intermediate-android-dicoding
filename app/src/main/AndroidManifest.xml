@@ -46,9 +46,6 @@
             android:name=".screens.formuploader.FormUploaderActivity"
             android:exported="true" />
         <activity
-            android:name=".screens.home.HomeActivity"
-            android:exported="true" />
-        <activity
             android:name="com.flowerencee9.storyapp.screens.detail.DetailActivity"
             android:exported="true" />
         <activity android:name=".screens.main.MainActivity"

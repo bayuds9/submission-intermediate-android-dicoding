@@ -19,7 +19,7 @@ interface PREF {
 class SharedPref(context: Context) {
     private var sharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREF.NAME, Context.MODE_PRIVATE)
-    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+    private val editor: SharedPreferences.Editor = sharedPreferences.edit()
     fun putString(key: String, value: String) {
         editor.putString(key, value)
             .apply()

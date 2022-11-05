@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityAuthFormBinding
 import com.flowerencee9.storyapp.models.request.LoginRequest
@@ -18,17 +18,19 @@ import com.flowerencee9.storyapp.screens.main.MainActivity
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
+import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthFormBinding
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels {
+        ViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (isLogin()) startActivity(MainActivity.newIntent(this, true))
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setContentView(binding.root)
         setupView()
     }
@@ -89,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setupButtonStates()
-        viewModel.loadingStates.observe(this){
+        viewModel.loadingStates.observe(this) {
             binding.loading.loadingContainer.showView(it)
             Log.d(TAG, "loading $it")
         }
