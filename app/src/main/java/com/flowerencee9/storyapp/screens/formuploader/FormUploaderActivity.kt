@@ -22,15 +22,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityFormUploaderBinding
 import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
-import com.flowerencee9.storyapp.models.response.BasicResponse
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
 import com.google.android.gms.maps.model.LatLng
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
@@ -99,27 +94,24 @@ class FormUploaderActivity : AppCompatActivity() {
             btnUpload.setOnClickListener {
                 uploadContent()
             }
+            viewModel.loadingStates.observe(this@FormUploaderActivity) {
+                loading.loadingContainer.showView(it)
+                Log.d(TAG, "loading $it")
+            }
         }
     }
 
     private fun uploadContent() {
         if (getFile != null) {
             val file = reduceFileImage(getFile as File)
-            val description =
-                binding.edtDescription.getText().toRequestBody("text/plain".toMediaTypeOrNull())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                file.name,
-                requestImageFile
-            )
+            val description = binding.edtDescription.getText()
             val request = ContentUploaderRequest(
-                latLangPosition.latitude, latLangPosition.longitude, imageMultipart, description
+                latLangPosition.latitude, latLangPosition.longitude, file, description
             )
-            viewModel.uploadContent(request) { respond: BasicResponse ->
-                Log.d(TAG, "$respond")
-                binding.root.snackbar(respond.message)
-                if (!respond.error) Handler(Looper.getMainLooper()).postDelayed(
+            viewModel.uploadContent(request)
+            viewModel.basicResponse.observe(this) {
+                binding.root.snackbar(it.message)
+                if (!it.error) Handler(Looper.getMainLooper()).postDelayed(
                     { onBackPressedDispatcher.onBackPressed() },
                     1000
                 )
@@ -203,8 +195,10 @@ class FormUploaderActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = FormUploaderActivity::class.java.simpleName
-        fun newIntent(context: Context, position: LatLng) = Intent(context, FormUploaderActivity::class.java).putExtra(
-            EXTRA_LATLNG, position)
+        fun newIntent(context: Context, position: LatLng) =
+            Intent(context, FormUploaderActivity::class.java).putExtra(
+                EXTRA_LATLNG, position
+            )
 
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
