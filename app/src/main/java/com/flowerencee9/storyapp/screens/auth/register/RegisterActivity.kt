@@ -20,14 +20,13 @@ import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.EMAIL
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
-import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthFormBinding
-    private val viewModel: AuthViewModel by viewModels {
-        ViewModelFactory(this)
-    }
+    private val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -14,9 +14,6 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(Injection.provideStories(context)) as T
         }
-        if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
-            return AuthViewModel(context) as T
-        }
         if (modelClass.isAssignableFrom(FormUploaderViewModel::class.java)) {
             return FormUploaderViewModel(context) as T
         }
