@@ -12,6 +12,8 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -21,14 +23,13 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityMapsBinding
+import com.flowerencee9.storyapp.models.Coordinates
 import com.flowerencee9.storyapp.models.response.Story
 import com.flowerencee9.storyapp.screens.auth.login.LoginActivity
 import com.flowerencee9.storyapp.screens.detail.DetailActivity
 import com.flowerencee9.storyapp.screens.formuploader.FormUploaderActivity
+import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInfoWindow
-import com.flowerencee9.storyapp.support.getUserName
-import com.flowerencee9.storyapp.support.isLogin
-import com.flowerencee9.storyapp.support.removeUserPref
 import com.flowerencee9.storyapp.support.supportclass.LoadingStateAdapter
 import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -57,6 +58,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var binding: ActivityMapsBinding
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient : FusedLocationProviderClient
+
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_open_animation
+        )
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_close_animation
+        )
+    }
+    private val fromBottom: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.from_bottom_animation
+        )
+    }
+    private val toBottom: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.to_bottom_animation
+        )
+    }
+    private var clicked = false
 
     private val viewModel: MainViewModel by viewModels {
         ViewModelFactory(this)
@@ -101,7 +128,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun setupView() {
         with(binding){
-            btnAdd.isEnabled = false
+            fabAddContentLocation.isEnabled = false
             rvItem.apply {
                 adapter = mapItemAdapter.withLoadStateFooter(
                     footer = LoadingStateAdapter{
@@ -113,9 +140,60 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             setSupportActionBar(mapsToolbar)
             tvUserName.text = getUserName()
             btnLogout.setOnClickListener { logoutUser() }
+            fabParent.setOnClickListener { expandBottom() }
+            fabAddContent.setOnClickListener { startActivity(FormUploaderActivity.newIntent(this@MainActivity)) }
         }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    private fun expandBottom() {
+        setVisibility(clicked)
+        setAnimation(clicked)
+        setClickable(clicked)
+        clicked = !clicked
+    }
+
+    private fun setVisibility(clicked: Boolean) {
+        with(binding) {
+            if (clicked) {
+                fabAddContentLocation.toInvisible()
+                fabAddContent.toInvisible()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    fabAddContentLocation.toHide()
+                    fabAddContent.toHide()
+                }, 300)
+            } else {
+                fabAddContentLocation.toShow()
+                fabAddContent.toShow()
+            }
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        with(binding) {
+            if (clicked) {
+                fabAddContentLocation.startAnimation(toBottom)
+                fabAddContent.startAnimation(toBottom)
+                fabParent.startAnimation(rotateClose)
+            } else {
+                fabAddContentLocation.startAnimation(fromBottom)
+                fabAddContent.startAnimation(fromBottom)
+                fabParent.startAnimation(rotateOpen)
+            }
+        }
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        with(binding) {
+            if (clicked) {
+                fabAddContentLocation.isClickable = false
+                fabAddContent.isClickable = false
+            } else {
+                fabAddContentLocation.isClickable = true
+                fabAddContent.isClickable = true
+            }
+        }
     }
 
     private fun relocateScreen(latLng: LatLng, addNew: Boolean? = false) {
@@ -134,7 +212,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     .fillColor(R.color.night_fall_transparent)
             )
             Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(FormUploaderActivity.newIntent(this, latLng))
+                startActivity(FormUploaderActivity.newIntent(this, Coordinates(latLng.latitude, latLng.longitude)))
             }, 2000)
         }
     }
@@ -237,7 +315,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    binding.btnAdd.apply {
+                    binding.fabAddContentLocation.apply {
                         isEnabled = true
                         setOnClickListener {
                             relocateScreen(currentLatLng, true)
@@ -245,7 +323,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     }
 
                 } else {
-                    binding.btnAdd.isEnabled = false
+                    binding.fabAddContentLocation.isEnabled = false
                     Toast.makeText(this, getString(R.string.location_not_found), Toast.LENGTH_SHORT)
                         .show()
                 }

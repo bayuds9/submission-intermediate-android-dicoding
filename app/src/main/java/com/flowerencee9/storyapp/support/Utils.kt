@@ -57,6 +57,10 @@ fun View.showView(states: Boolean) {
     }
 }
 
+fun View.toInvisible() {
+    this.visibility = View.INVISIBLE
+}
+
 interface SpannableListener {
     fun onClick()
 }

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityFormUploaderBinding
+import com.flowerencee9.storyapp.models.Coordinates
 import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
@@ -33,7 +34,7 @@ import java.io.File
 class FormUploaderActivity : AppCompatActivity() {
 
     private val latLangPosition by lazy {
-        intent.parcelable(EXTRA_LATLNG) ?: LatLng(0.0, 0.0)
+        intent.parcelable(EXTRA_LATLNG) ?: Coordinates(null, null)
     }
 
     private lateinit var binding: ActivityFormUploaderBinding
@@ -109,8 +110,9 @@ class FormUploaderActivity : AppCompatActivity() {
             val file = reduceFileImage(getFile as File)
             val description = binding.edtDescription.getText()
             val request = ContentUploaderRequest(
-                latLangPosition.latitude, latLangPosition.longitude, file, description
+                latLangPosition.lat, latLangPosition.long, file, description
             )
+            Log.d(TAG, "request $request")
             viewModel.uploadContent(request)
             viewModel.basicResponse.observe(this) {
                 binding.root.snackbar(it.message)
@@ -198,7 +200,7 @@ class FormUploaderActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = FormUploaderActivity::class.java.simpleName
-        fun newIntent(context: Context, position: LatLng) =
+        fun newIntent(context: Context, position: Coordinates? = null) =
             Intent(context, FormUploaderActivity::class.java).putExtra(
                 EXTRA_LATLNG, position
             )

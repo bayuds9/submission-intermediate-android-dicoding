@@ -22,6 +22,7 @@
 
     <string name="desc_image">Image To Upload</string>
     <string name="add_content">Add Content</string>
+    <string name="add_content_with_location">Add Content With Location</string>
     <string name="log_out">Log out</string>
     <string name="locate">Locate</string>
     <string name="detail">Detail</string>

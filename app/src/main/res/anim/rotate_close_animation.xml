@@ -2,9 +2,9 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillAfter="true">
     <rotate
-        android:fromDegrees="45"
+        android:fromDegrees="315"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toDegrees="0"
+        android:toDegrees="360"
         android:duration="300"/>
 </set>
