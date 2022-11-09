@@ -8,6 +8,7 @@ import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.request.RegisterRequest
 import com.flowerencee9.storyapp.models.response.BasicResponse
 import com.flowerencee9.storyapp.models.response.LoginResponse
+import com.flowerencee9.storyapp.models.response.LoginResult
 import com.flowerencee9.storyapp.networking.API
 import com.flowerencee9.storyapp.support.PREF
 import com.flowerencee9.storyapp.support.SharedPref
@@ -24,6 +25,9 @@ class AuthRepository @Inject constructor(
     private val TAG = AuthRepository::class.java.simpleName
     private val sharedPref = SharedPref(context)
 
+    private val _loginResult: MutableLiveData<LoginResult> = MutableLiveData()
+    val loginResult : LiveData<LoginResult> get() = _loginResult
+
     private val _basicResponse: MutableLiveData<BasicResponse> = MutableLiveData()
     val basicResponse: LiveData<BasicResponse> get() = _basicResponse
 
@@ -35,11 +39,11 @@ class AuthRepository @Inject constructor(
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 Log.d(TAG, "calling ${call.request()}")
                 if (response.isSuccessful) {
-                    val loginResponse = response.body()?.loginResult
+                    _loginResult.value = response.body()?.loginResult
                     response.body()?.let {
                         _basicResponse.value = BasicResponse(false, it.message)
                     }
-                    loginResponse?.let {
+                    _loginResult.value?.let {
                         sharedPref.putString(PREF.BEARER_TOKEN, it.token)
                         sharedPref.putString(PREF.USER_NAME, it.name)
                         sharedPref.putString(PREF.USER_ID, it.userId)

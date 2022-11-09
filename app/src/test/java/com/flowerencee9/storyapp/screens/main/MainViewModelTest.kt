@@ -37,13 +37,13 @@ class MainViewModelTest {
     private lateinit var storyRepository: StoryRepository
 
     @Test
-    fun `when Get Quote Should Not Null`() = runTest {
+    fun `when Get Story Should Not Null`() = runTest {
         val dummyStory = DataDummy.generateDummyQuoteResponse()
         val data: PagingData<Story> = StoryPagingSource.snapshot(dummyStory)
-        val expectedQuote = MutableLiveData<PagingData<Story>>()
-        expectedQuote.value = data
+        val expectStory = MutableLiveData<PagingData<Story>>()
+        expectStory.value = data
 
-        Mockito.`when`(storyRepository.getStory()).thenReturn(expectedQuote)
+        Mockito.`when`(storyRepository.getStory()).thenReturn(expectStory)
         val mapsViewModel = MainViewModel(storyRepository)
         val actualStory: PagingData<Story> = mapsViewModel.stories.getOrAwaitValue()
 
