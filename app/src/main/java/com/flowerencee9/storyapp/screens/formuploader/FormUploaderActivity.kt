@@ -26,11 +26,11 @@ import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
-import com.flowerencee9.storyapp.support.supportclass.ViewModelFactory
-import com.google.android.gms.maps.model.LatLng
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
 
+@AndroidEntryPoint
 class FormUploaderActivity : AppCompatActivity() {
 
     private val latLangPosition by lazy {
@@ -41,9 +41,7 @@ class FormUploaderActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
 
-    private val viewModel: FormUploaderViewModel by viewModels {
-        ViewModelFactory(this)
-    }
+    private val viewModel by viewModels<FormUploaderViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
