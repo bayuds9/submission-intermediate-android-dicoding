@@ -35,6 +35,7 @@ class MainViewModelTest {
 
     @Mock
     private lateinit var storyRepository: StoryRepository
+    private lateinit var viewModel: MainViewModel
 
     @Test
     fun `when Get Story Should Not Null`() = runTest {
@@ -44,14 +45,16 @@ class MainViewModelTest {
         expectStory.value = data
 
         Mockito.`when`(storyRepository.getStory()).thenReturn(expectStory)
-        val mapsViewModel = MainViewModel(storyRepository)
-        val actualStory: PagingData<Story> = mapsViewModel.stories.getOrAwaitValue()
+
+        viewModel = MainViewModel(storyRepository)
+        val actualStory: PagingData<Story> = viewModel.stories.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = AdapterItemData.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main
         )
+
         differ.submitData(actualStory)
 
         Assert.assertNotNull(differ.snapshot())

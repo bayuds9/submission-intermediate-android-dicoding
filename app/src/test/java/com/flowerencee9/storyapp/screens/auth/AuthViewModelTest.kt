@@ -3,6 +3,7 @@ package com.flowerencee9.storyapp.screens.auth
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.flowerencee9.storyapp.getOrAwaitValue
+import com.flowerencee9.storyapp.models.data.AuthRepository
 import com.flowerencee9.storyapp.models.request.LoginRequest
 import com.flowerencee9.storyapp.models.request.RegisterRequest
 import com.flowerencee9.storyapp.models.response.BasicResponse
@@ -13,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -22,6 +24,7 @@ class AuthViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
+    private lateinit var authRepository: AuthRepository
     private lateinit var viewModel : AuthViewModel
 
     @Test
@@ -32,13 +35,12 @@ class AuthViewModelTest {
         val expect = MutableLiveData<BasicResponse>()
         expect.value = dumResult
 
-        viewModel.loginUser(dumRequest)
-        Mockito.verify(viewModel).loginUser(dumRequest)
+        authRepository.loginUser(dumRequest)
+        `when`(authRepository.basicResponse).thenReturn(expect)
 
-        Mockito.`when`(viewModel.basicResponse).thenReturn(expect)
-
+        viewModel = AuthViewModel(authRepository)
         val actualData = viewModel.basicResponse.getOrAwaitValue()
-        Mockito.verify(viewModel).basicResponse
+
         assertEquals(actualData, expect.value)
     }
 
@@ -50,13 +52,11 @@ class AuthViewModelTest {
         val expect = MutableLiveData<BasicResponse>()
         expect.value = dumResult
 
-        viewModel.registerUser(dumRequest)
-        Mockito.verify(viewModel).registerUser(dumRequest)
+        authRepository.registerUser(dumRequest)
+        `when`(authRepository.basicResponse).thenReturn(expect)
 
-        Mockito.`when`(viewModel.basicResponse).thenReturn(expect)
-
+        viewModel = AuthViewModel(authRepository)
         val actualData = viewModel.basicResponse.getOrAwaitValue()
-        Mockito.verify(viewModel).basicResponse
         assertEquals(actualData, expect.value)
     }
 }

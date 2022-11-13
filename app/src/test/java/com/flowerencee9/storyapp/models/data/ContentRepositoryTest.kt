@@ -33,8 +33,23 @@ class ContentRepositoryTest {
     private lateinit var dummyMockFile : File
 
     @Test
-    fun `verify uploadStory is works well by checking the return value of BasicResponse`() {
+    fun `verify uploadStory is works well for upload story with location by checking the return value of BasicResponse`() {
         val dumRequest = ContentUploaderRequest(44.1, 55.1, dummyMockFile, "test")
+        val expect = MutableLiveData<BasicResponse>()
+        expect.value = BasicResponse(false, "SUCCESS")
+
+        repo.uploadContent(dumRequest)
+
+        `when`(repo.basicResponse).thenReturn(expect)
+
+        val actual = repo.basicResponse.getOrAwaitValue()
+        verify(repo).basicResponse
+        assertEquals(actual, expect.value)
+    }
+
+    @Test
+    fun `verify uploadStory is works well for upload story without location by checking the return value of BasicResponse`() {
+        val dumRequest = ContentUploaderRequest(null, null, dummyMockFile, "test")
         val expect = MutableLiveData<BasicResponse>()
         expect.value = BasicResponse(false, "SUCCESS")
 
