@@ -46,7 +46,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines:0.19.2'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'junit:junit:4.12'
