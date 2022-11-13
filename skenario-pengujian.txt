@@ -1,0 +1,25 @@
+AuthRepositoryTest 
+- Memastikan login berhasil dengan menghasilkan data dalam objek LoginResult yang berisi data login
+- Memastikan login berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+- Memastikan register berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+
+ContentRepositoryTest
+- Memastikan penambahan story berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+
+StoryRepositoryTest
+- Memastikan pengambilan data story tidak mengembalikan nilai null
+
+AuthViewModelTest 
+- Memastikan login pada AuthViewModel berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+- Memastikan register pada AuthViewModel berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+
+FormUploaderViewModelTest
+- Memastikan penambahan story dengan lokasi pada FormUploaderViewModel berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+- Memastikan penambahan story tanpa lokasi pada FormUploaderViewModel berhasil dengan menghasilkan data dalam objek BasicResponse yang berisi status error dan message
+
+MainViewModelTest
+- Memastikan pengambilan data story pada MainViewModel tidak mengembalikan nilai null
+
+StoryRemoteMediatorTest
+- Memastikan load mengembalikan RemoteMediator.MediatorResult.Success.
+- Memastikan jumlah endOfPaginationReached bernilai false.
