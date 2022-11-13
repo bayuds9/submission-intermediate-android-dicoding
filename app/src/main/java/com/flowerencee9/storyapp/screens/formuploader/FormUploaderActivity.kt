@@ -23,6 +23,7 @@ import com.flowerencee9.storyapp.R
 import com.flowerencee9.storyapp.databinding.ActivityFormUploaderBinding
 import com.flowerencee9.storyapp.models.Coordinates
 import com.flowerencee9.storyapp.models.request.ContentUploaderRequest
+import com.flowerencee9.storyapp.screens.main.MainActivity
 import com.flowerencee9.storyapp.support.*
 import com.flowerencee9.storyapp.support.customs.CustomInput
 import com.flowerencee9.storyapp.support.customs.CustomInput.TYPE.TEXT
@@ -115,7 +116,9 @@ class FormUploaderActivity : AppCompatActivity() {
             viewModel.basicResponse.observe(this) {
                 binding.root.snackbar(it.message)
                 if (!it.error) Handler(Looper.getMainLooper()).postDelayed(
-                    { onBackPressedDispatcher.onBackPressed() },
+                    {
+                        startActivity(MainActivity.newIntent(this))
+                    },
                     1000
                 )
             }

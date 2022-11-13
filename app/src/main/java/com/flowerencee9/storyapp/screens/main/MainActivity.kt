@@ -43,9 +43,9 @@ import com.google.android.gms.maps.model.*
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
     GoogleMap.OnInfoWindowClickListener {
     companion object {
-        fun newIntent(context: Context, clearStack: Boolean = true) : Intent{
+        fun newIntent(context: Context) : Intent{
             val intent = Intent(context, MainActivity::class.java)
-            if (clearStack) intent.addFlags(
+            intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or
                         Intent.FLAG_ACTIVITY_CLEAR_TASK or
                         Intent.FLAG_ACTIVITY_NEW_TASK
@@ -231,8 +231,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         viewModel.stories.observe(this){
             mapItemAdapter.submitData(lifecycle, it)
         }
-        Log.d(TAG, "map data ${mapItemAdapter.snapshotData.value}")
-        if (mapItemAdapter.snapshotData.value?.isNotEmpty() == true) mapItemAdapter.refresh()
     }
 
     override fun onMapReady(p0: GoogleMap) {

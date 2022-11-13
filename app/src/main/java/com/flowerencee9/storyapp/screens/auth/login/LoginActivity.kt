@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isLogin()) startActivity(MainActivity.newIntent(this, true))
+        if (isLogin()) startActivity(MainActivity.newIntent(this))
         binding = ActivityAuthFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginUser(request)
             viewModel.basicResponse.observe(this@LoginActivity) {
                 Log.d(TAG, "login response $it")
-                if (!it.error) startActivity(MainActivity.newIntent(this@LoginActivity, true))
+                if (!it.error) startActivity(MainActivity.newIntent(this@LoginActivity))
                 else binding.root.snackbar(it.message)
             }
         }
